@@ -1,0 +1,707 @@
+<title>MythoKoo — Untold Heroes of Indian Mythology</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+/* ══════════════════════════════════════════════════════
+   DESIGN TOKENS
+   Layout: sticky nav → cinematic hero → two season grids → footer
+   Palette: deep indigo night-sky with gold / saffron / maroon warmth
+   ══════════════════════════════════════════════════════ */
+:root {
+  /* Surfaces */
+  --bg:          #09091C;
+  --bg-nav:      rgba(9,9,28,.92);
+  --bg-card:     #111130;
+  --bg-card-h:   #17173E;
+  --bg-s1:       #100A18;   /* ramayana — deeper purple */
+  --bg-s2:       #0A100A;   /* mahabharata — midnight forest */
+  --bg-footer:   #060610;
+
+  /* Text */
+  --fg:          #EDE8D8;
+  --fg-muted:    #9890A8;
+  --fg-nav:      #EDE8D8;
+
+  /* Accents */
+  --gold:        #C8902A;
+  --gold-bright: #E8A83A;
+  --saffron:     #D86820;
+  --maroon:      #8B1A28;
+  --teal:        #1A7868;
+
+  /* Season markers */
+  --s1-accent:   #BF4040;   /* Ramayana — vermillion */
+  --s1-bg:       #1A0808;
+  --s2-accent:   #3A70B8;   /* Mahabharata — warrior blue */
+  --s2-bg:       #080F1A;
+
+  /* UI */
+  --btn-bg:      #C8902A;
+  --btn-fg:      #09091C;
+  --btn-h:       #E8A83A;
+  --border:      rgba(200,144,42,.18);
+  --border-card: rgba(200,144,42,.12);
+
+  --radius:      10px;
+
+  color-scheme: dark;
+}
+
+/* ── Reset & base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  padding-left: max(0px, env(safe-area-inset-left, 0px));
+  padding-right: max(0px, env(safe-area-inset-right, 0px));
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ── Navigation ────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  background: var(--bg-nav);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: .85rem max(24px, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav-logo-img {
+  height: 46px;
+  width: auto;
+  display: block;
+}
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+.nav-links a:hover { color: var(--gold-bright); }
+
+@media (max-width: 540px) {
+  .nav-links { display: none; }
+}
+
+/* ── Hero ───────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 5rem max(24px, env(safe-area-inset-left, 0px)) 4.5rem;
+  text-align: center;
+  background: linear-gradient(170deg, #1A0A28 0%, #0A0A1E 50%, #0A100A 100%);
+}
+
+/* decorative mandala rings */
+.hero::before, .hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200,144,42,.12);
+  pointer-events: none;
+}
+.hero::before {
+  width: 700px; height: 700px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.hero::after {
+  width: 500px; height: 500px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.hero-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+
+.hero-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  margin-bottom: 1.2rem;
+}
+
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: .02em;
+  color: var(--fg);
+  text-wrap: balance;
+  margin-bottom: 1rem;
+}
+.hero-title .accent { color: var(--gold-bright); }
+
+.hero-sub {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  color: var(--fg-muted);
+  font-style: italic;
+  max-width: 520px;
+  margin: 0 auto 2rem;
+  line-height: 1.55;
+}
+
+.hero-badges {
+  display: flex;
+  gap: .6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero-badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: .35em .9em;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  background: rgba(255,255,255,.04);
+}
+.hero-badge strong { color: var(--gold); }
+
+.hero-logo-box {
+  display: inline-flex;
+  background: #FEFAF0;
+  border-radius: 20px;
+  padding: 1.4rem 2.8rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(200,144,42,.25);
+  margin-bottom: 2rem;
+}
+.hero-logo-box img {
+  width: min(440px, 82vw);
+  height: auto;
+  display: block;
+}
+@media (max-width: 480px) {
+  .hero-logo-box { padding: 1rem 1.6rem; border-radius: 14px; }
+}
+
+/* ── Section header ─────────────────────────────────────── */
+.section-wrap {
+  padding: 3.5rem max(24px, env(safe-area-inset-left, 0px));
+}
+.section-wrap.s1 { background: var(--bg-s1); }
+.section-wrap.s2 { background: var(--bg-s2); }
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+.s1 .section-eyebrow { color: var(--s1-accent); }
+.s2 .section-eyebrow { color: var(--s2-accent); }
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: .03em;
+  line-height: 1.2;
+}
+.section-count {
+  font-size: 12px;
+  color: var(--fg-muted);
+  white-space: nowrap;
+  padding-bottom: .2rem;
+}
+
+/* ── Book grid ──────────────────────────────────────────── */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.book-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.book-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200,144,42,.35);
+  box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 0 1px rgba(200,144,42,.15);
+  background: var(--bg-card-h);
+}
+
+/* Cover image wrapper */
+.book-cover {
+  position: relative;
+  aspect-ratio: 320 / 510;
+  overflow: hidden;
+  background: #0A0A18;
+}
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .35s ease;
+}
+.book-card:hover .book-cover img { transform: scale(1.03); }
+
+.book-num {
+  position: absolute;
+  top: .6rem;
+  left: .6rem;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  background: rgba(9,9,28,.8);
+  color: var(--gold);
+  padding: .2em .6em;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+/* Book info */
+.book-info {
+  padding: .9rem 1rem 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+.book-name {
+  font-family: 'Cinzel', serif;
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--fg);
+  line-height: 1.25;
+}
+.book-sub {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: .88rem;
+  font-style: italic;
+  color: var(--fg-muted);
+  line-height: 1.4;
+  flex: 1;
+}
+.book-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+  margin-top: .5rem;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: .5em 1em;
+  border-radius: 6px;
+  transition: background .15s;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+.book-cta:hover { background: var(--btn-h); }
+.book-cta svg { flex-shrink: 0; }
+
+/* ── About strip ─────────────────────────────────────────── */
+.about-strip {
+  background: #0E0E22;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem max(24px, env(safe-area-inset-left, 0px));
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+.about-item {}
+.about-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .5rem;
+}
+.about-text {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1rem;
+  color: var(--fg-muted);
+  line-height: 1.55;
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+footer {
+  background: var(--bg-footer);
+  padding: 2.5rem max(24px, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+}
+.footer-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.footer-copy {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+@media (max-width: 480px) {
+  .book-grid { grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .section-wrap { padding: 2.5rem 16px; }
+  .hero { padding: 3.5rem 16px 3rem; }
+  .book-info { padding: .7rem .75rem .85rem; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav class="nav">
+  <img class="nav-logo-img" src="logo.png" alt="MythoKoo">
+  <ul class="nav-links">
+    <li><a href="#season1">Ramayana</a></li>
+    <li><a href="#season2">Mahabharata</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo-box">
+      <img src="logo.png" alt="MythoKoo — Big Epics. Little-Known Stories.">
+    </div>
+    <h1 class="hero-title">The <span class="accent">Untold Heroes</span> of Indian Mythology</h1>
+    <p class="hero-sub">Picture books for ages 4–12 that bring the forgotten heroes of the Ramayana and Mahabharata back to life — in full colour, for young readers.</p>
+    <div class="hero-badges">
+      <span class="hero-badge"><strong>16</strong> books available</span>
+      <span class="hero-badge">Ages <strong>4–12</strong></span>
+      <span class="hero-badge">Kindle — <strong>$2.99</strong> / <strong>₹149</strong></span>
+      <span class="hero-badge"><strong>Hindi</strong> editions available</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SEASON 1 ═══════════════════ -->
+<section class="section-wrap s1" id="season1">
+  <div class="section-header">
+    <div>
+      <p class="section-eyebrow">Season 1 · Books 1–8</p>
+      <h2 class="section-title">Untold Heroes of the Ramayana</h2>
+    </div>
+    <span class="section-count">8 books · All live on Kindle</span>
+  </div>
+  <div class="book-grid">
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book1.jpg" alt="Jatayu cover" loading="lazy">
+        <span class="book-num">Book 1</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Jatayu</div>
+        <div class="book-sub">The Vulture King Who Gave His Life for Sita</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HJWZRD1M" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book2.jpg" alt="Sampati cover" loading="lazy">
+        <span class="book-num">Book 2</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Sampati</div>
+        <div class="book-sub">The Elder Eagle of the Ramayana</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HJY9JY6B" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book3.jpg" alt="Angad cover" loading="lazy">
+        <span class="book-num">Book 3</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Angad's Embassy</div>
+        <div class="book-sub">The Monkey Prince Who Stood Firm</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HK145L84" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book4.jpg" alt="Nal and Neel cover" loading="lazy">
+        <span class="book-num">Book 4</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Nal and Neel</div>
+        <div class="book-sub">The Builders Who Crossed the Sea</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HJZ1ZK74" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book5.jpg" alt="Trijata cover" loading="lazy">
+        <span class="book-num">Book 5</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Trijata</div>
+        <div class="book-sub">The Demoness Who Chose Kindness</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HJYVZCGZ" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book6.jpg" alt="Shabari cover" loading="lazy">
+        <span class="book-num">Book 6</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Shabari</div>
+        <div class="book-sub">The Hermit Who Waited for Rama</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HK1FL82T" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book7.jpg" alt="Kewat cover" loading="lazy">
+        <span class="book-num">Book 7</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Kewat</div>
+        <div class="book-sub">The Boatman Who Carried Rama Across the Ganga</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HK53K1YQ" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book8.jpg" alt="Jambavan cover" loading="lazy">
+        <span class="book-num">Book 8</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Jambavan</div>
+        <div class="book-sub">The Bear-King Who Guided Hanuman</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HK56TJFR" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ SEASON 2 ═══════════════════ -->
+<section class="section-wrap s2" id="season2">
+  <div class="section-header">
+    <div>
+      <p class="section-eyebrow">Season 2 · Books 9–16</p>
+      <h2 class="section-title">Untold Heroes of the Mahabharata</h2>
+    </div>
+    <span class="section-count">8 books · All live on Kindle</span>
+  </div>
+  <div class="book-grid">
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book9.jpg" alt="Ekalavya cover" loading="lazy">
+        <span class="book-num">Book 9</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Ekalavya</div>
+        <div class="book-sub">The Boy Who Taught Himself Archery</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HL14B8M4" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book10.jpg" alt="Dhrishtadyumna cover" loading="lazy">
+        <span class="book-num">Book 10</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Dhrishtadyumna</div>
+        <div class="book-sub">The Warrior Born from Fire</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HJ6LX2PD" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book11.jpg" alt="Shikhandi cover" loading="lazy">
+        <span class="book-num">Book 11</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Shikhandi</div>
+        <div class="book-sub">Three Lives to Finish One Injustice</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HLPWXZYR" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book12.jpg" alt="Iravan cover" loading="lazy">
+        <span class="book-num">Book 12</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Iravan</div>
+        <div class="book-sub">The Brave Son Who Gave Up Tomorrow</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HLPRST5D" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book13.jpg" alt="Ghatotkacha cover" loading="lazy">
+        <span class="book-num">Book 13</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Ghatotkacha</div>
+        <div class="book-sub">The Giant Son Who Saved the Pandavas</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HNNT8LQ7" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book14.jpg" alt="Barbarika cover" loading="lazy">
+        <span class="book-num">Book 14</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Barbarika</div>
+        <div class="book-sub">The Mightiest Warrior Who Never Fought</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HNV2N9WS" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book15.jpg" alt="Yuyutsu cover" loading="lazy">
+        <span class="book-num">Book 15</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Yuyutsu</div>
+        <div class="book-sub">The One Kaurava Who Chose Right</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HPGNTCKZ" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="covers/book16.jpg" alt="Ulupi cover" loading="lazy">
+        <span class="book-num">Book 16</span>
+      </div>
+      <div class="book-info">
+        <div class="book-name">Ulupi</div>
+        <div class="book-sub">The Naga Princess Who Brought the Hero Back</div>
+        <a class="book-cta" href="https://www.amazon.com/dp/B0HPGMMPSV" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Read on Kindle
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ ABOUT ═══════════════════ -->
+<div class="about-strip">
+  <div class="about-item">
+    <p class="about-label">What is MythoKoo?</p>
+    <p class="about-text">A picture book series that tells the stories of the heroes who stood in the shadows of the epics — the ones history glossed over, but whose courage shaped everything.</p>
+  </div>
+  <div class="about-item">
+    <p class="about-label">Who are these books for?</p>
+    <p class="about-text">Children aged 4–12, and the parents who read to them. Rich in story, brief enough for bedtime, and illustrated in full colour on every page.</p>
+  </div>
+  <div class="about-item">
+    <p class="about-label">Where to read</p>
+    <p class="about-text">All 16 books are available on Kindle worldwide. Each title is priced at $2.99 (₹149 in India) and is part of KDP Select for Kindle Unlimited subscribers.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <div class="footer-logo">MythoKoo</div>
+  <div class="footer-copy">© 2026 MythoKoo Stories &nbsp;·&nbsp; Published by MythoKoo Stories &nbsp;·&nbsp; <a href="mailto:mythokoo@quizykoo.com" style="color:inherit">mythokoo@quizykoo.com</a></div>
+</footer>
